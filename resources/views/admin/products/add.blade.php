@@ -14,7 +14,8 @@
                                 <option>--Chọn--</option>
                                 @if (!empty($categorys))
                                     @foreach ($categorys as $category)
-                                        <option value="{{ $category->idloai }}">{{ $category->tenloai }}</option>
+                                        <option {{ $category->idloai == old('id_loai') ? 'selected' : '' }}
+                                            value="{{ $category->idloai }}">{{ $category->tenloai }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -25,7 +26,7 @@
                         <div class="mb-3">
                             <label for="exampleInputTensp" class="form-label">Tên sản phẩm</label>
                             <input type="text" name="ten_san_pham" class="form-control" id="exampleInputTensp"
-                                placeholder="Nhập tên sản phẩm">
+                                placeholder="Nhập tên sản phẩm" value="{{ old('ten_san_pham') }}">
                             @error('ten_san_pham')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
@@ -33,7 +34,7 @@
                         <div class="mb-3">
                             <label for="exampleInputSoLuong" class="form-label">Số lượng</label>
                             <input type="number" name="so_luong" class="form-control" id="exampleInputSoLuong"
-                                placeholder="Nhập số lượng">
+                                placeholder="Nhập số lượng" value="{{ old('so_luong') }}">
                             @error('so_luong')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
@@ -41,20 +42,21 @@
                         <div class="mb-3">
                             <label for="exampleInputGia" class="form-label">Giá</label>
                             <input type="number" name="gia" class="form-control" id="exampleInputGia"
-                                placeholder="Nhập giá">
+                                placeholder="Nhập giá" value={{ old('gia') }}>
                             @error('gia')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Ảnh</label>
-                            <input class="form-control" name="anh" type="file" id="formFile">
+                            <input class="form-control" name="anh" type="file" id="formFile"
+                                value="{{ old('anh') }}">
                             @error('anh')
                                 <span class="error-message">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" name="mo_ta" id="floatingTextarea" style="height: 150px;"></textarea>
+                            <textarea class="form-control" name="mo_ta" id="floatingTextarea" style="height: 150px;">{{ old('mo_ta') }}</textarea>
                             <label for="floatingTextarea">Mô tả</label>
                             @error('mo_ta')
                                 <span class="error-message">{{ $message }}</span>

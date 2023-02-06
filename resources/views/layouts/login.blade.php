@@ -6,14 +6,16 @@
         <div class="form__wrapper">
             <div class="form-control">
                 <label for="email">Email</label>
-                <input placeholder="Nhập email" class="form-input" type="email" name="email" id="email">
+                <input placeholder="Nhập email" value="{{ old('email') }}" class="form-input" type="email" name="email"
+                    id="email">
             </div>
             @error('email')
                 <span class="error-message">{{ $message }}</span>
             @enderror
             <div class="form-control">
                 <label for="matkhau">Mật khẩu</label>
-                <input class="form-input" placeholder="Nhập mật khẩu" type="password" name="mat_khau" id="matkhau">
+                <input class="form-input" placeholder="Nhập mật khẩu" value="{{ old('mat_khau') }}" type="password"
+                    name="mat_khau" id="matkhau">
             </div>
             @error('mat_khau')
                 <span class="error-message">{{ $message }}</span>

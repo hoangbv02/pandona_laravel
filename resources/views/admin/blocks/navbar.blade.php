@@ -38,8 +38,6 @@
                 <span class="d-none d-lg-inline-flex"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                <a href="#" class="dropdown-item">My Profile</a>
-                <a href="../index.php?pages=dang_ky&author=admin" class="dropdown-item">Sign up</a>
                 <a href="{{ route('logout', ['auth' => 'admin']) }}" class="dropdown-item">Log Out</a>
             </div>
         </div>

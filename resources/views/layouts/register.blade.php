@@ -6,14 +6,16 @@
         <div class="form__wrapper">
             <div class="">
                 <label for="ten">Tên</label>
-                <input class="form-input" type="text" name="ten_kh" id="ten" placeholder="Nhập tên">
+                <input class="form-input" type="text" name="ten_kh" id="ten" placeholder="Nhập tên"
+                    value="{{ old('ten_kh') }}">
                 @error('ten_kh')
                     <span class="error-message">{{ $message }}</span>
                 @enderror
             </div>
             <div class="">
                 <label for="sdt">Số điện thoại</label>
-                <input class="form-input" type="text" name="sdt" id="sdt" placeholder="Nhập số điện thoại">
+                <input class="form-input" type="text" name="sdt" id="sdt" placeholder="Nhập số điện thoại"
+                    value="{{ old('sdt') }}">
                 @error('sdt')
                     <span class="error-message">{{ $message }}</span>
                 @enderror
@@ -21,8 +23,10 @@
             <div class="form-gender">
                 <label for="gioitinh">Giới tính:</label>
                 <div>
-                    Nam: <input type="radio" name="gioi_tinh" value="Nam" id="gioitinh">
-                    Nữ: <input type="radio" name="gioi_tinh" value="Nữ" id="gioitinh">
+                    Nam: <input type="radio" {{ old('gioi_tinh') == 'Nam' ? 'checked' : '' }} name="gioi_tinh"
+                        value="Nam" id="gioitinh">
+                    Nữ: <input type="radio" {{ old('gioi_tinh') == 'Nữ' ? 'checked' : '' }} name="gioi_tinh"
+                        value="Nữ" id="gioitinh">
                 </div>
                 @error('gioi_tinh')
                     <span class="error-message">{{ $message }}</span>
@@ -30,7 +34,7 @@
             </div>
             <div class="">
                 <label for="ngaysinh">Ngày sinh</label>
-                <input class="form-input" type="date" name="ngay_sinh" id="ngaysinh">
+                <input class="form-input" type="date" name="ngay_sinh" id="ngaysinh" value="{{ old('ngay_sinh') }}">
             </div>
             @error('ngay_sinh')
                 <span class="error-message">{{ $message }}</span>
@@ -38,21 +42,23 @@
             <div class="form-address">
                 <label for="diachi">Địa chỉ</label>
                 <textarea class="" name="dia_chi" id="diachi"
-                    style="height: 100px; width: 70%;border: 1px solid var(--primary-color-text);"></textarea>
+                    style="height: 100px; width: 70%;border: 1px solid var(--primary-color-text);">{{ old('dia_chi') }}</textarea>
             </div>
             @error('dia_chi')
                 <span class="error-message">{{ $message }}</span>
             @enderror
             <div class="">
                 <label for="email">Email</label>
-                <input class="form-input" type="email" name="email" id="email" placeholder="Nhập email">
+                <input class="form-input" type="email" name="email" id="email" placeholder="Nhập email"
+                    value="{{ old('email') }}">
                 @error('email')
                     <span class="error-message">{{ $message }}</span>
                 @enderror
             </div>
             <div class="">
                 <label for="matkhau">Mật khẩu</label>
-                <input class="form-input" type="password" placeholder="Nhập mật khẩu" name="mat_khau" id="matkhau">
+                <input class="form-input" type="password" placeholder="Nhập mật khẩu" name="mat_khau" id="matkhau"
+                    value="{{ old('mat_khau') }}">
                 @error('mat_khau')
                     <span class="error-message">{{ $message }}</span>
                 @enderror

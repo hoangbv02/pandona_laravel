@@ -14,7 +14,7 @@
                                 <option>--Chọn--</option>
                                 @if (!empty($categorys))
                                     @foreach ($categorys as $category)
-                                        <option {{ $category->idloai == $product->idloai ? 'selected' : '' }}
+                                        <option {{ $category->idloai == old('id_loai', $product->idloai) ? 'selected' : '' }}
                                             value="{{ $category->idloai }}">{{ $category->tenloai }}</option>
                                     @endforeach
                                 @endif
