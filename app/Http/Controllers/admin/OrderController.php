@@ -107,6 +107,11 @@ class OrderController extends Controller
     }
     function orderCancel($id)
     {
+        $orders = $this->orders->getDetails($id)->all();
+        foreach ($orders as $order) {
+            $newQuantity = $order->soluong + $order->sl;
+            $this->products->updateQuantity($order->idsp, $newQuantity);
+        }
         $this->orders->deleteOrder($id);
         $this->orders->deleteOrderDetails($id);
         return redirect()->route('info')->with('message', 'Hủy đơn hàng thành công!');
