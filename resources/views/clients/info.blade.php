@@ -24,12 +24,9 @@
                         <th>Tổng tiền</th>
                         <th>Hành động</th>
                     </tr>
-                    @if (!empty($orders))
+                    @if ($orders)
                         @foreach ($orders as $order)
                             @if ($order->idkh !== session('user')->idkh)
-                                <tr>
-                                    <td colspan="10">Bạn chưa có đơn hàng nào!</td>
-                                </tr>
                                 @php
                                     break;
                                 @endphp
@@ -62,6 +59,10 @@
                                 </tr>
                             @endif
                         @endforeach
+                    @else
+                        <tr>
+                            <td colspan="10">Bạn chưa có đơn hàng nào!</td>
+                        </tr>
                     @endif
                 </table>
             </div>

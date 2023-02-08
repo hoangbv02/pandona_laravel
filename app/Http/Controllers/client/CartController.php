@@ -55,48 +55,51 @@ class CartController extends Controller
     {
         $checkProduct = $this->carts->getProductCart($id);
         $product = $this->products->getProduct($id);
-        if (request()->has('chi_tiet_san_pham')) {
-            $getQuantity = request()->input('so_luong');
-            if (!empty($checkProduct)) {
-                if ($checkProduct->soluong < $product->soluong) {
-                    $quantity = $checkProduct->soluong + $getQuantity;
-                    $total_price = $checkProduct->gia * $quantity;
-                    $this->carts->updateQuantity($id, $quantity, $total_price);
-                    return redirect()->route('carts.index')->with('message', 'Cập nhật số lượng sản phẩm thành công!');
+        if ($product->soluong > 0) {
+            if (request()->has('chi_tiet_san_pham')) {
+                $getQuantity = request()->input('so_luong');
+                if (!empty($checkProduct)) {
+                    if ($checkProduct->soluong < $product->soluong) {
+                        $quantity = $checkProduct->soluong + $getQuantity;
+                        $total_price = $checkProduct->gia * $quantity;
+                        $this->carts->updateQuantity($id, $quantity, $total_price);
+                        return redirect()->route('carts.index')->with('message', 'Cập nhật số lượng sản phẩm thành công!');
+                    }
+                } else {
+                    $cart = [
+                        'idsp' => $product->idsp,
+                        'idloai' => $product->idloai,
+                        'gia' => $product->gia,
+                        'soluong' => $getQuantity,
+                        'anh' => $product->anh,
+                        'tonggia' => $product->gia * $getQuantity,
+                    ];
+                    $this->carts->addCart($cart);
+                    return redirect()->route('carts.index')->with('message', 'Thêm sản phẩm vào giỏ hàng thành công!');
                 }
             } else {
-                $cart = [
-                    'idsp' => $product->idsp,
-                    'idloai' => $product->idloai,
-                    'gia' => $product->gia,
-                    'soluong' => $getQuantity,
-                    'anh' => $product->anh,
-                    'tonggia' => $product->gia * $getQuantity,
-                ];
-                $this->carts->addCart($cart);
-                return redirect()->route('carts.index')->with('message', 'Thêm sản phẩm vào giỏ hàng thành công!');
-            }
-        } else {
-            if (!empty($checkProduct)) {
-                if ($checkProduct->soluong < $product->soluong) {
-                    $quantity = $checkProduct->soluong + 1;
-                    $total_price = $checkProduct->gia * $quantity;
-                    $this->carts->updateQuantity($id, $quantity, $total_price);
-                    return redirect()->route('carts.index')->with('message', 'Cập nhật số lượng sản phẩm thành công!');
+                if (!empty($checkProduct)) {
+                    if ($checkProduct->soluong < $product->soluong) {
+                        $quantity = $checkProduct->soluong + 1;
+                        $total_price = $checkProduct->gia * $quantity;
+                        $this->carts->updateQuantity($id, $quantity, $total_price);
+                        return redirect()->route('carts.index')->with('message', 'Cập nhật số lượng sản phẩm thành công!');
+                    }
+                } else {
+                    $cart = [
+                        'idsp' => $product->idsp,
+                        'idloai' => $product->idloai,
+                        'gia' => $product->gia,
+                        'soluong' => $this->quantity,
+                        'anh' => $product->anh,
+                        'tonggia' => $product->gia * $this->quantity,
+                    ];
+                    $this->carts->addCart($cart);
+                    return redirect()->route('carts.index')->with('message', 'Thêm sản phẩm vào giỏ hàng thành công!');
                 }
-            } else {
-                $cart = [
-                    'idsp' => $product->idsp,
-                    'idloai' => $product->idloai,
-                    'gia' => $product->gia,
-                    'soluong' => $this->quantity,
-                    'anh' => $product->anh,
-                    'tonggia' => $product->gia * $this->quantity,
-                ];
-                $this->carts->addCart($cart);
-                return redirect()->route('carts.index')->with('message', 'Thêm sản phẩm vào giỏ hàng thành công!');
             }
         }
+        return redirect()->route('products')->with('message', ['error', 'Hết hàng. Vui lòng chọn sản phẩm khác!']);
     }
     function delete($id)
     {
@@ -114,7 +117,7 @@ class CartController extends Controller
             $listProduct = $this->carts->getList()->all();
             if ($listProduct) {
                 $code = rand(0, 99999);
-                $date = date("Y-m-d");
+                $date = date("Y-m-d H:i:s");
                 $status = 0;
                 $total_money = $this->carts->getTotalMoney();
                 $order = [
@@ -136,6 +139,9 @@ class CartController extends Controller
                         'tonggia' => $item->tonggia
                     ];
                     $this->orders->addOrderDetails($orderDetails);
+                    $getProduct = $this->products->getProduct($item->idsp);
+                    $newQuantity = $getProduct->soluong - $item->sl;
+                    $this->products->updateQuantity($item->idsp, $newQuantity);
                 }
                 $this->carts->deleteAll();
                 return redirect()->route('info')->with('message', 'Thanh toán thành công!');
@@ -150,28 +156,34 @@ class CartController extends Controller
     {
         if (session()->has('user')) {
             $code = rand(0, 99999);
-            $date = date("Y-m-d");
+            $date = date("Y-m-d H:i:s");
             $status = 0;
             $product = request()->input();
-            $order = [
-                'idkh' => session('user')->idkh,
-                'sdt' => session('user')->sdt,
-                'dhcode' => $code,
-                'diachi' => session('user')->diachi,
-                'ngaydathang' => $date,
-                'trangthai' => $status,
-                'tongtien' => $product['gia'] * $product['soluong']
-            ];
-            $this->orders->addOrder($order);
-            $orderDetails = [
-                'idsp' => $product['idsp'],
-                'dhcode' => $code,
-                'gia' => $product['gia'],
-                'soluong' => $product['soluong'],
-                'tonggia' => $product['gia'] * $product['soluong']
-            ];
-            $this->orders->addOrderDetails($orderDetails);
-            return redirect()->route('info')->with('message', 'Thanh toán thành công!');
+            $getProduct = $this->products->getProduct($product['idsp']);
+            if ($getProduct->soluong > 0) {
+                $order = [
+                    'idkh' => session('user')->idkh,
+                    'sdt' => session('user')->sdt,
+                    'dhcode' => $code,
+                    'diachi' => session('user')->diachi,
+                    'ngaydathang' => $date,
+                    'trangthai' => $status,
+                    'tongtien' => $product['gia'] * $product['soluong']
+                ];
+                $this->orders->addOrder($order);
+                $orderDetails = [
+                    'idsp' => $product['idsp'],
+                    'dhcode' => $code,
+                    'gia' => $product['gia'],
+                    'soluong' => $product['soluong'],
+                    'tonggia' => $product['gia'] * $product['soluong']
+                ];
+                $this->orders->addOrderDetails($orderDetails);
+                $newQuantity = $getProduct->soluong - $product['soluong'];
+                $this->products->updateQuantity($product['idsp'], $newQuantity);
+                return redirect()->route('info')->with('message', 'Thanh toán thành công!');
+            }
+            return redirect()->route('product-details', ['id' => $getProduct->idsp])->with('message', ['error', 'Sản phẩm đã hết!']);
         } else {
             return redirect()->route('login')->with('message', ['error', 'Vui lòng đăng nhập để thanh toán!']);
         }

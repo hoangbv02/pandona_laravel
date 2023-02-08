@@ -57,7 +57,7 @@
                             @enderror
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" name="mo_ta" id="floatingTextarea" style="height: 150px;">{{ old('mo_ta', $product->mota) }}</textarea>
+                            <textarea class="form-control" name="mo_ta" id="floatingTextarea" style="height: 150px;">{{ old('mo_ta', $product->mtsp) }}</textarea>
                             <label for="floatingTextarea">Mô tả</label>
                             @error('mo_ta')
                                 <span class="error-message">{{ $message }}</span>

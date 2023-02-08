@@ -30,6 +30,7 @@
     </div>
     <a class="btn-top" href="#"><i class="fa-solid fa-arrow-up"></i></a>
     <script src="{{ asset('frontend/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    @yield('js')
     @yield('script')
     <script src="{{ asset('frontend/jquery/jquery-3.6.1.min.js') }}"></script>
     <script src="{{ asset('frontend/swiper/swiper-bundle.min.js') }}"></script>

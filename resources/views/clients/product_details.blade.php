@@ -83,7 +83,7 @@
         </div>
     @endif
 @endsection
-@section('script')
+@section('js')
     <script>
         const valueIdsp = document.querySelector('input[name="idsp"]').value;
         const soLuong = document.querySelector('input[name="so_luong"]');
@@ -120,3 +120,16 @@
         })
     </script>
 @endsection
+@if (session('message'))
+    @section('script')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: '{{ is_array(session('message')) ? session('message')[0] : 'success' }}',
+                title: '{{ is_array(session('message')) ? session('message')[1] : session('message') }}',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    @endsection
+@endif

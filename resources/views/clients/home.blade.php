@@ -46,6 +46,8 @@
                             </form>
                         </div>
                     @endforeach
+                @else
+                    <div>Không có sản phẩm nào!</div>
                 @endif
             </div>
             <div class="swiper-button-next"></div>
@@ -131,6 +133,8 @@
                             </form>
                         </div>
                     @endforeach
+                @else
+                    <div>Không có sản phẩm nào!</div>
                 @endif
             </div>
             <div class="swiper-pagination"></div>

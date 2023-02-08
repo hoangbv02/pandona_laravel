@@ -31,6 +31,12 @@ class ProductModel extends Model
         return DB::table($this->table)->join('loaisp', $this->table . '.idloai', 'loaisp.idloai')
             ->select('*', $this->table . '.mota as mtsp', 'loaisp.mota as mtloai')->where('idsp', $id)->first();
     }
+    function updateQuantity($id, $quantity)
+    {
+        return DB::table($this->table)->where('idsp', $id)->update([
+            'soluong' => $quantity,
+        ]);
+    }
     function addProduct($product)
     {
         return DB::table($this->table)->insert([
@@ -40,7 +46,7 @@ class ProductModel extends Model
             'gia' => $product['gia'],
             'anh' => $product['anh'],
             'mota' => $product['mo_ta'],
-            'ngaytao' => date('Y-m-d')
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
     function editProduct($id, $product)
@@ -52,7 +58,7 @@ class ProductModel extends Model
             'gia' => $product['gia'],
             'anh' => $product['anh'],
             'mota' => $product['mo_ta'],
-            'ngaytao' => date('Y-m-d')
+            'updated_at' => date('Y-m-d H:i:s')
         ]);
     }
     function deleteProduct($id)
